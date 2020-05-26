@@ -63,13 +63,24 @@ class ImportTransactionsService {
 
     await categoriesRepository.save(newCategories);
 
-    // const finalCategory = [...newCategories, ...existentCategories];
+    const finalCategory = [...newCategories, ...existentCategories];
 
-    // const creayedTransactionRepository = transactionRepository.create({
-    //   // transactions.map(transaction=>({
-    //   //   title: transaction.title,
-    //   // }))
-    // });
+    const createdTransactions = transactionRepository.create(
+      transactions.map(transaction => ({
+        title: transaction.title,
+        type: transaction.type,
+        value: transaction.value,
+        category: finalCategory.find(
+          category => category.title === transaction.category,
+        ),
+      })),
+    );
+
+    await transactionRepository.save(createdTransactions);
+
+    await fs.promises.unlink(filePath);
+
+    return createdTransactions;
   }
 }
 
