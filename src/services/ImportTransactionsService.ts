@@ -33,7 +33,7 @@ class ImportTransactionsService {
       const [title, type, value, category] = line.map((cell: string) =>
         cell.trim(),
       );
-      if (!title || type || value) return;
+      if (!title || !type || !value) return;
 
       categories.push(category);
 
@@ -63,14 +63,13 @@ class ImportTransactionsService {
 
     await categoriesRepository.save(newCategories);
 
-    const finalCategory = [...newCategories, ...existentCategories];
+    // const finalCategory = [...newCategories, ...existentCategories];
 
-    const creayedTransactionRepository = transactionRepository.create({
-      transactions.map(transaction=>({
-        title: transaction.title,
-
-      }))
-    })
+    // const creayedTransactionRepository = transactionRepository.create({
+    //   // transactions.map(transaction=>({
+    //   //   title: transaction.title,
+    //   // }))
+    // });
   }
 }
 
